@@ -9,25 +9,26 @@ module Marginalia
       Marginalia::Comment.components = [:application, :controller, :action]
       instrumented_class.class_eval do
         if defined? :execute
-          if Marginalia::Comment.components.include? :line
-            alias_method :execute_without_marginalia, :execute
-            alias_method :execute, :execute_with_marginalia_lines
-          else
-            alias_method :execute_without_marginalia, :execute
-            alias_method :execute, :execute_with_marginalia
-          end
+          alias_method :execute_without_marginalia, :execute
+          alias_method :execute, :execute_with_marginalia
+        end
+        if defined? :exec_query
+          alias_method :exec_query_without_marginalia, :exec_query
+          alias_method :exec_query, :exec_query_with_marginalia
         end
       end
     end
 
     def execute_with_marginalia(sql, name = nil)
+      Marginalia::Comment.update! if Marginalia::Comment.components.include? :line
       execute_without_marginalia("#{sql} /*#{Marginalia::Comment.to_s}*/", name)
     end
 
-    def execute_with_marginalia_lines(sql, name = nil)
-      Marginalia::Comment.update!
-      execute_with_marginalia(sql, name)
+    def exec_query_with_marginalia(sql, name = nil, binds = nil)
+      Marginalia::Comment.update! if Marginalia::Comment.components.include? :line
+      exec_query_without_marginalia("#{sql} /*#{Marginalia::Comment.to_s}*/", name, binds)
     end
+
   end
 
 end
