@@ -37,36 +37,29 @@ module Marginalia
 
     def self.insert_into_active_record
       if defined? ActiveRecord::ConnectionAdapters::Mysql2Adapter
-        if ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::Mysql2Adapter)
-          ActiveRecord::ConnectionAdapters::Mysql2Adapter.module_eval do
-            include Marginalia::ActiveRecordInstrumentation
-          end
+        ActiveRecord::ConnectionAdapters::Mysql2Adapter.module_eval do
+          include Marginalia::ActiveRecordInstrumentation
         end
       end
 
       if defined? ActiveRecord::ConnectionAdapters::MysqlAdapter
-        if ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::MysqlAdapter)
-          ActiveRecord::ConnectionAdapters::MysqlAdapter.module_eval do
-            include Marginalia::ActiveRecordInstrumentation
-          end
+        ActiveRecord::ConnectionAdapters::MysqlAdapter.module_eval do
+          include Marginalia::ActiveRecordInstrumentation
         end
       end
 
       if defined? ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
-        if ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
-          ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.module_eval do
-            include Marginalia::ActiveRecordInstrumentation
-          end
+        ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.module_eval do
+          include Marginalia::ActiveRecordInstrumentation
         end
       end
 
       if defined? ActiveRecord::ConnectionAdapters::SQLiteAdapter
-        if ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters::SQLiteAdapter)
-          ActiveRecord::ConnectionAdapters::SQLiteAdapter.module_eval do
-            include Marginalia::ActiveRecordInstrumentation
-          end
+        ActiveRecord::ConnectionAdapters::SQLiteAdapter.module_eval do
+          include Marginalia::ActiveRecordInstrumentation
         end
       end
+
     end
   end
 end
