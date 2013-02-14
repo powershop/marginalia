@@ -27,7 +27,7 @@ module Marginalia
       end
 
       def self.controller
-        @controller.controller_name if @controller.respond_to? :controller_name
+        @controller.controller_path if @controller.respond_to? :controller_path
       end
 
       def self.action
