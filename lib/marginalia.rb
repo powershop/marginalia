@@ -12,10 +12,6 @@ module Marginalia
           alias_method :execute_without_marginalia, :execute
           alias_method :execute, :execute_with_marginalia
         end
-        if defined? :exec_query
-          alias_method :exec_query_without_marginalia, :exec_query
-          alias_method :exec_query, :exec_query_with_marginalia
-        end
       end
     end
 
@@ -23,12 +19,5 @@ module Marginalia
       Marginalia::Comment.update! if Marginalia::Comment.components.include? :line
       execute_without_marginalia("#{sql} /*#{Marginalia::Comment.to_s}*/", name)
     end
-
-    def exec_query_with_marginalia(sql, name = nil, binds = [])
-      Marginalia::Comment.update! if Marginalia::Comment.components.include? :line
-      exec_query_without_marginalia("#{sql} /*#{Marginalia::Comment.to_s}*/", name, binds)
-    end
-
   end
-
 end
