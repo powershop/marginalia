@@ -1,18 +1,27 @@
+require 'socket'
+
 module Marginalia
   module Comment
-    mattr_accessor :components, :comment, :lines_to_ignore
+    mattr_accessor :components, :lines_to_ignore
 
     def self.update!(controller = nil)
       @controller = controller
-      self.comment = self.components.collect{|c| "#{c}:#{self.send(c) }" }.join(",")
     end
 
-    def self.to_s
-      self.comment
+    def self.construct_comment
+      ret = ''
+      self.components.each do |c|
+        component_value = self.send(c)
+        if component_value.present?
+          ret << ',' if ret.present?
+          ret << c.to_s << ':' << component_value.to_s
+        end
+      end
+      ret
     end
 
     def self.clear!
-      self.comment = nil
+      @controller = nil
     end
 
     private
@@ -31,12 +40,14 @@ module Marginalia
       end
 
       def self.action
-        @controller.action_name if @controller.respond_to? :action_name 
+        @controller.action_name if @controller.respond_to? :action_name
       end
 
       def self.line
-        Marginalia::Comment.lines_to_ignore ||= /\.rvm|gem|vendor|marginalia|rbenv/
-        last_line = caller.detect { |line| line !~ Marginalia::Comment.lines_to_ignore }
+        Marginalia::Comment.lines_to_ignore ||= /\.rvm|gem|vendor\/|marginalia|rbenv/
+        last_line = caller.detect do |line|
+          line !~ Marginalia::Comment.lines_to_ignore
+        end
         if last_line
           root = if defined?(Rails) && Rails.respond_to?(:root)
             Rails.root.to_s
@@ -50,6 +61,14 @@ module Marginalia
           end
           last_line
         end
+      end
+
+      def self.hostname
+        @cached_hostname ||= Socket.gethostname
+      end
+
+      def self.pid
+        Process.pid
       end
 
   end

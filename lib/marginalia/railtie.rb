@@ -29,7 +29,7 @@ module Marginalia
           Marginalia::Comment.update!(self)
           yield
         ensure
-          Marginalia::Comment.clear! 
+          Marginalia::Comment.clear!
         end
         around_filter :record_query_comment
       end
@@ -48,18 +48,18 @@ module Marginalia
         end
       end
 
+      # SQL queries made through PostgreSQLAdapter#exec_delete will not be annotated.
       if defined? ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
         ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.module_eval do
           include Marginalia::ActiveRecordInstrumentation
         end
       end
 
-      if defined? ActiveRecord::ConnectionAdapters::SQLiteAdapter
-        ActiveRecord::ConnectionAdapters::SQLiteAdapter.module_eval do
+      if defined? ActiveRecord::ConnectionAdapters::SQLite3Adapter
+        ActiveRecord::ConnectionAdapters::SQLite3Adapter.module_eval do
           include Marginalia::ActiveRecordInstrumentation
         end
       end
-
     end
   end
 end

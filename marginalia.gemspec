@@ -8,15 +8,17 @@ Gem::Specification.new do |gem|
   gem.test_files    = `git ls-files -- {test}/*`.split("\n")
   gem.name          = "marginalia"
   gem.require_paths = ["lib"]
-  gem.version       = "1.1.0"
+  gem.version       = "1.1.5"
+  gem.license       = "MIT"
 
-  gem.add_runtime_dependency "actionpack", ">= 2.3", "< 3.3"
-  gem.add_runtime_dependency "activerecord", ">= 2.3", "< 3.3"
+  gem.add_runtime_dependency "actionpack", ">= 2.3"
+  gem.add_runtime_dependency "activerecord", ">= 2.3"
   gem.add_development_dependency "rake"
   gem.add_development_dependency "mysql"
   gem.add_development_dependency "mysql2"
   gem.add_development_dependency "pg"
   gem.add_development_dependency "sqlite3"
+  gem.add_development_dependency "mocha"
 
-  gem.summary = description = %q{Attach comments to your ActiveRecord queries.}
+  gem.summary = gem.description = %q{Attach comments to your ActiveRecord queries.}
 end
