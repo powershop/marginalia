@@ -31,7 +31,7 @@ module Marginalia
         ensure
           Marginalia::Comment.clear!
         end
-        around_filter :record_query_comment
+        around_action :record_query_comment
       end
     end
 
